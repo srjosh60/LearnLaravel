@@ -8,6 +8,14 @@
     ],
     "routes": [
         {
+            "src": "/bootstrap-5.3.8-dist/(.*)",
+            "dest": "/public/bootstrap-5.3.8-dist/$1"
+        },
+        {
+            "src": "/favicon.ico",
+            "dest": "/public/favicon.ico"
+        },
+        {
             "src": "/(.*)",
             "dest": "/public/index.php"
         }
