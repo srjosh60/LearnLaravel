@@ -1,5 +1,13 @@
 <?php
 
+// Let PHP built-in server serve static files directly (used by vercel-php)
+if (php_sapi_name() === 'cli-server') {
+    $file = __DIR__ . parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+    if (is_file($file)) {
+        return false;
+    }
+}
+
 define('LARAVEL_START', microtime(true));
 
 ini_set('display_errors', '1');
