@@ -1,6 +1,29 @@
 <?php
 
-// Let PHP built-in server serve static files directly (used by vercel-php)
+// Serve static files for Vercel (all requests are routed through index.php)
+$requestPath = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
+if ($requestPath && $requestPath !== '/') {
+    $staticFile = __DIR__ . $requestPath;
+    $realPublic  = realpath(__DIR__);
+    $realFile    = realpath($staticFile);
+    if ($realFile && $realPublic && str_starts_with($realFile, $realPublic) && is_file($realFile)) {
+        $ext = strtolower(pathinfo($realFile, PATHINFO_EXTENSION));
+        if (!in_array($ext, ['php', 'env', 'log'])) {
+            $mime = [
+                'jpg' => 'image/jpeg', 'jpeg' => 'image/jpeg', 'png' => 'image/png',
+                'gif' => 'image/gif',  'webp' => 'image/webp', 'svg' => 'image/svg+xml',
+                'ico' => 'image/x-icon', 'css' => 'text/css', 'js' => 'application/javascript',
+                'woff' => 'font/woff', 'woff2' => 'font/woff2', 'ttf' => 'font/ttf',
+            ][$ext] ?? 'application/octet-stream';
+            header('Content-Type: ' . $mime);
+            header('Cache-Control: public, max-age=86400');
+            readfile($realFile);
+            exit;
+        }
+    }
+}
+
+// PHP built-in server (local development)
 if (php_sapi_name() === 'cli-server') {
     $file = __DIR__ . parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
     if (is_file($file)) {
