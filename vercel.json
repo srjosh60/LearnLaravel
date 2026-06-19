@@ -5,15 +5,5 @@
             "src": "public/index.php",
             "use": "vercel-php@0.7.2"
         }
-    ],
-    "routes": [
-        {
-            "src": "^/(.*\\.(css|js|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|map|webp))$",
-            "dest": "/public/$1"
-        },
-        {
-            "src": "/(.*)",
-            "dest": "/public/index.php"
-        }
     ]
 }
