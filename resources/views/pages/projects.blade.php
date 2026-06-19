@@ -40,15 +40,8 @@
     <div class="row text-center mt-2 py-3">
         @forelse ($projects as $project)
         <div class="col-md-4 mt-4 h-100">
-            @if($project->image)
-                @if(str_contains($project->image, '/'))
-                <img src="{{ Storage::url($project->image) }}" alt="{{ $project->title }}" class="card-img-top">
-                @else
-                <img src="{{ asset('bootstrap-5.3.8-dist/images/' . $project->image) }}" alt="{{ $project->title }}" class="card-img-top">
-                @endif
-            @else
-            <img src="{{ asset('bootstrap-5.3.8-dist/images/default.png') }}" alt="No Image" class="card-img-top">
-            @endif
+            <img src="{{ $project->image_url }}" alt="{{ $project->title }}" class="card-img-top"
+                 onerror="this.src='https://placehold.co/400x200?text=No+Image'">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">{{ $project->title }}</h5>

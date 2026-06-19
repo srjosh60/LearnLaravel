@@ -13,10 +13,9 @@
     <div class="row justify-content-center py-3">
         <div class="col-md-8 mt-4">
             <div class="card shadow-sm">
-                @if($project->image && str_contains($project->image, '/'))
-                <img src="{{ Storage::url($project->image) }}" alt="{{ $project->title }}" class="card-img-top">
-                @elseif($project->image)
-                <img src="{{ asset('bootstrap-5.3.8-dist/images/' . $project->image) }}" alt="{{ $project->title }}" class="card-img-top">
+                @if($project->image)
+                <img src="{{ $project->image_url }}" alt="{{ $project->title }}" class="card-img-top"
+                     onerror="this.style.display='none'">
                 @endif
                 <div class="card-body">
                     <h5 class="card-title">{{ $project->title }}</h5>

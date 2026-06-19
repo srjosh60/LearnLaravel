@@ -37,11 +37,7 @@
                     <td>{{ $index + 1 }}</td>
                     <td>
                         @if($project->image)
-                            @if(str_contains($project->image, '/'))
-                            <img src="{{ Storage::url($project->image) }}" width="80" height="60" style="object-fit: cover; border-radius: 5px;">
-                            @else
-                            <img src="{{ asset('bootstrap-5.3.8-dist/images/' . $project->image) }}" width="80" height="60" style="object-fit: cover; border-radius: 5px;">
-                            @endif
+                        <img src="{{ $project->image_url }}" width="80" height="60" style="object-fit: cover; border-radius: 5px;" onerror="this.style.display='none'">
                         @else
                         <span class="text-muted">No Image</span>
                         @endif

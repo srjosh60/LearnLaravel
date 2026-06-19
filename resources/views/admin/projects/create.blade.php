@@ -9,7 +9,7 @@
 
 <div class="card border-0 shadow-sm">
     <div class="card-body p-4">
-        <form action="{{ route('admin.projects.store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.projects.store') }}" method="POST">
             @csrf
             <div class="mb-3">
                 <label class="form-label fw-bold">Judul Project</label>
@@ -27,9 +27,10 @@
                 @error('teknologi')<div class="invalid-feedback">{{ $message }}</div>@enderror
             </div>
             <div class="mb-3">
-                <label class="form-label fw-bold">Upload Gambar</label>
-                <input type="file" name="image" class="form-control @error('image') is-invalid @enderror" accept="image/*">
-                @error('image')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                <label class="form-label fw-bold">URL Gambar</label>
+                <input type="url" name="image_url" class="form-control @error('image_url') is-invalid @enderror" value="{{ old('image_url') }}" placeholder="https://contoh.com/gambar.jpg">
+                <small class="text-muted">Paste URL gambar dari internet (Imgur, Google Drive, dll)</small>
+                @error('image_url')<div class="invalid-feedback">{{ $message }}</div>@enderror
             </div>
             <div class="mb-3">
                 <label class="form-label fw-bold">Status</label>

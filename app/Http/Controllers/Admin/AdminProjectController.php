@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Projects;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class AdminProjectController extends Controller
@@ -24,24 +23,19 @@ class AdminProjectController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required',
+            'title'     => 'required',
             'description' => 'required',
             'teknologi' => 'required',
-            'status' => 'required',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'status'    => 'required',
+            'image_url' => 'nullable|url',
         ]);
 
-        $imagePath = null;
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('projects', 'public');
-        }
-
         Projects::create([
-            'title' => $request->title,
+            'title'       => $request->title,
             'description' => $request->description,
-            'teknologi' => $request->teknologi,
-            'status' => $request->status,
-            'image' => $imagePath,
+            'teknologi'   => $request->teknologi,
+            'status'      => $request->status,
+            'image'       => $request->filled('image_url') ? $request->image_url : null,
         ]);
 
         return redirect()->route('admin.projects.index')->with('success', 'Project added successfully!');
@@ -58,27 +52,21 @@ class AdminProjectController extends Controller
         $request->validate([
             'title' => 'required',
             'description' => 'required',
-            'teknologi' => 'required',
-            'status' => 'required',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'teknologi'  => 'required',
+            'status'     => 'required',
+            'image_url'  => 'nullable|url',
         ]);
 
         $project = Projects::findOrFail($id);
 
-        $imagePath = $project->image;
-        if ($request->hasFile('image')) {
-            if ($project->image) {
-                Storage::disk('public')->delete($project->image);
-            }
-            $imagePath = $request->file('image')->store('projects', 'public');
-        }
+        $imagePath = $request->filled('image_url') ? $request->image_url : $project->image;
 
         $project->update([
-            'title' => $request->title,
+            'title'       => $request->title,
             'description' => $request->description,
-            'teknologi' => $request->teknologi,
-            'status' => $request->status,
-            'image' => $imagePath,
+            'teknologi'   => $request->teknologi,
+            'status'      => $request->status,
+            'image'       => $imagePath,
         ]);
 
         return redirect()->route('admin.projects.index')->with('success', 'Project updated successfully!');
