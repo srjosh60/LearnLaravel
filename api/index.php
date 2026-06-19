@@ -28,6 +28,8 @@ if (is_dir($viewCacheSrc)) {
     }
 }
 
+require_once $root . '/vendor/autoload.php';
+
 $app = require_once $root . '/bootstrap/app.php';
 
 $app->useStoragePath('/tmp/storage');
