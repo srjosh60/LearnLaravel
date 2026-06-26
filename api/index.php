@@ -11,6 +11,10 @@ if (isset($_GET['_test'])) {
     echo 'DB_USERNAME: ' . (getenv('DB_USERNAME') ?: 'not set') . "\n";
     echo 'SESSION_DRIVER: ' . (getenv('SESSION_DRIVER') ?: 'not set') . "\n";
     echo 'APP_DEBUG: ' . (getenv('APP_DEBUG') ?: 'not set') . "\n";
+    echo "\n-- FILES CHECK --\n";
+    echo 'vendor/autoload.php: ' . (file_exists(__DIR__ . '/../vendor/autoload.php') ? 'EXISTS' : 'MISSING') . "\n";
+    echo 'bootstrap/app.php: ' . (file_exists(__DIR__ . '/../bootstrap/app.php') ? 'EXISTS' : 'MISSING') . "\n";
+    echo 'bootstrap/cache/packages.php: ' . (file_exists(__DIR__ . '/../bootstrap/cache/packages.php') ? 'EXISTS' : 'MISSING') . "\n";
     echo "\n-- DB CONNECTION TEST --\n";
     echo 'pdo_mysql: ' . (extension_loaded('pdo_mysql') ? 'YES' : 'NO') . "\n";
     try {
