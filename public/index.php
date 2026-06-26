@@ -3,6 +3,11 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 
+// Temporary: show PHP errors for Vercel debugging
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
+
 define('LARAVEL_START', microtime(true));
 
 // Vercel serverless: filesystem is read-only except /tmp
