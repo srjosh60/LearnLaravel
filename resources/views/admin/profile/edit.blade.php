@@ -45,7 +45,7 @@
         <div class="mb-3">
             <label class="form-label">Logo</label><br>
             @if ($profile->logo)
-                <img src="{{ asset('bootstrap-5.3.8-dist/images/' . $profile->logo) }}" width="80" class="mb-2 rounded">
+                <img src="{{ str_starts_with($profile->logo, 'http') ? $profile->logo : asset('bootstrap-5.3.8-dist/images/' . $profile->logo) }}" width="80" class="mb-2 rounded">
             @endif
             <input type="file" name="logo" class="form-control" accept="image/*">
             <small class="text-muted">Kosongkan jika tidak ingin mengganti logo.</small>

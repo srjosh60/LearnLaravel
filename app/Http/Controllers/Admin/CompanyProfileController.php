@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\CompanyProfile;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class CompanyProfileController extends Controller
 {
@@ -37,10 +38,7 @@ class CompanyProfileController extends Controller
         ]);
 
         if ($request->hasFile('logo')) {
-            $file = $request->file('logo');
-            $filename = time() . '_' . preg_replace('/\s+/', '-', $file->getClientOriginalName());
-            $file->move(public_path('bootstrap-5.3.8-dist/images'), $filename);
-            $validated['logo'] = $filename;
+            $validated['logo'] = $this->uploadToCloudinary($request->file('logo'));
         }
 
         CompanyProfile::create($validated);
@@ -71,14 +69,10 @@ class CompanyProfileController extends Controller
         ]);
 
         if ($request->hasFile('logo')) {
-            if ($profile->logo) {
-                $path = public_path('bootstrap-5.3.8-dist/images/' . $profile->logo);
-                if (file_exists($path)) @unlink($path);
+            if ($profile->logo && str_starts_with($profile->logo, 'http')) {
+                $this->deleteFromCloudinary($profile->logo);
             }
-            $file = $request->file('logo');
-            $filename = time() . '_' . preg_replace('/\s+/', '-', $file->getClientOriginalName());
-            $file->move(public_path('bootstrap-5.3.8-dist/images'), $filename);
-            $validated['logo'] = $filename;
+            $validated['logo'] = $this->uploadToCloudinary($request->file('logo'));
         }
 
         $profile->update($validated);
@@ -88,12 +82,55 @@ class CompanyProfileController extends Controller
 
     public function destroy(CompanyProfile $profile)
     {
-        if ($profile->logo) {
-            $path = public_path('bootstrap-5.3.8-dist/images/' . $profile->logo);
-            if (file_exists($path)) @unlink($path);
+        if ($profile->logo && str_starts_with($profile->logo, 'http')) {
+            $this->deleteFromCloudinary($profile->logo);
         }
         $profile->delete();
 
         return redirect()->route('admin.profile.index')->with('success', 'Profil perusahaan berhasil dihapus.');
+    }
+
+    private function uploadToCloudinary($file): string
+    {
+        $cloudName = config('services.cloudinary.cloud_name');
+        $apiKey    = config('services.cloudinary.api_key');
+        $apiSecret = config('services.cloudinary.api_secret');
+
+        $timestamp = time();
+        $signature = sha1("timestamp={$timestamp}{$apiSecret}");
+
+        $response = Http::attach(
+            'file',
+            file_get_contents($file->getRealPath()),
+            $file->getClientOriginalName()
+        )->post("https://api.cloudinary.com/v1_1/{$cloudName}/image/upload", [
+            'api_key'   => $apiKey,
+            'timestamp' => $timestamp,
+            'signature' => $signature,
+        ]);
+
+        return $response->json('secure_url');
+    }
+
+    private function deleteFromCloudinary(string $url): void
+    {
+        $cloudName = config('services.cloudinary.cloud_name');
+        $apiKey    = config('services.cloudinary.api_key');
+        $apiSecret = config('services.cloudinary.api_secret');
+
+        // Extract public_id from URL: .../upload/v123456/{public_id}.ext
+        if (!preg_match('/\/upload\/(?:v\d+\/)?(.+)\.\w+$/', $url, $matches)) {
+            return;
+        }
+        $publicId  = $matches[1];
+        $timestamp = time();
+        $signature = sha1("public_id={$publicId}&timestamp={$timestamp}{$apiSecret}");
+
+        Http::post("https://api.cloudinary.com/v1_1/{$cloudName}/image/destroy", [
+            'public_id' => $publicId,
+            'api_key'   => $apiKey,
+            'timestamp' => $timestamp,
+            'signature' => $signature,
+        ]);
     }
 }

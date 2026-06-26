@@ -24,7 +24,7 @@
                 <tr>
                     <td>
                         @if ($profile->logo)
-                            <img src="{{ asset('bootstrap-5.3.8-dist/images/' . $profile->logo) }}" width="50" height="50" style="object-fit:cover; border-radius:6px;">
+                            <img src="{{ str_starts_with($profile->logo, 'http') ? $profile->logo : asset('bootstrap-5.3.8-dist/images/' . $profile->logo) }}" width="50" height="50" style="object-fit:cover; border-radius:6px;">
                         @else
                             <span class="text-muted small">-</span>
                         @endif
