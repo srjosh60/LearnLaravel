@@ -5,6 +5,19 @@ use Illuminate\Http\Request;
 
 define('LARAVEL_START', microtime(true));
 
+// Vercel serverless: filesystem is read-only except /tmp
+if (getenv('VERCEL') || getenv('VERCEL_ENV')) {
+    foreach ([
+        '/tmp/storage/framework/views',
+        '/tmp/storage/framework/cache/data',
+        '/tmp/storage/framework/sessions',
+        '/tmp/storage/logs',
+        '/tmp/storage/app/public',
+    ] as $dir) {
+        is_dir($dir) || mkdir($dir, 0777, true);
+    }
+}
+
 // Determine if the application is in maintenance mode...
 if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php')) {
     require $maintenance;
