@@ -32,6 +32,17 @@ if (isset($_GET['_test'])) {
 ini_set('display_errors', '1');
 error_reporting(E_ALL);
 
+// Force HTTPS scheme for asset() URLs when request comes via HTTPS proxy (Vercel)
+if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {
+    $_SERVER['HTTPS'] = 'on';
+    $appUrl = getenv('APP_URL') ?: '';
+    if (!$appUrl || str_starts_with($appUrl, 'http://')) {
+        $host = $_SERVER['HTTP_HOST'] ?? ($_SERVER['HTTP_X_FORWARDED_HOST'] ?? 'localhost');
+        putenv('APP_URL=https://' . $host);
+        $_ENV['APP_URL'] = 'https://' . $host;
+    }
+}
+
 // Vercel: semua writable paths ke /tmp
 is_dir('/tmp/views') || mkdir('/tmp/views', 0777, true);
 is_dir('/tmp/bootstrap/cache') || mkdir('/tmp/bootstrap/cache', 0777, true);
