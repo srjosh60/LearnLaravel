@@ -27,17 +27,10 @@ set_exception_handler(function (\Throwable $e) {
     echo '<pre>' . htmlspecialchars($e->getFile() . ':' . $e->getLine()) . '</pre>';
 });
 
-// Vercel serverless: filesystem is read-only except /tmp
+// Vercel: redirect Blade compiled views to /tmp (only writable dir on serverless)
 if (getenv('VERCEL') || getenv('VERCEL_ENV')) {
-    foreach ([
-        '/tmp/storage/framework/views',
-        '/tmp/storage/framework/cache/data',
-        '/tmp/storage/framework/sessions',
-        '/tmp/storage/logs',
-        '/tmp/storage/app/public',
-    ] as $dir) {
-        is_dir($dir) || mkdir($dir, 0777, true);
-    }
+    is_dir('/tmp/views') || mkdir('/tmp/views', 0777, true);
+    putenv('VIEW_COMPILED_PATH=/tmp/views');
 }
 
 // Determine if the application is in maintenance mode...

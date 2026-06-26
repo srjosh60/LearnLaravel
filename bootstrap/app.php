@@ -19,9 +19,4 @@ $app = Application::configure(basePath: dirname(__DIR__))
         //
     })->create();
 
-// Vercel: use /tmp for writable storage (filesystem is read-only on serverless)
-if (getenv('VERCEL') || getenv('VERCEL_ENV')) {
-    $app->useStoragePath('/tmp/storage');
-}
-
 return $app;
