@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Web Profile')</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+    <title>@yield('title', 'HSRM Official')</title>
+    <link rel="stylesheet" href="{{ asset('bootstrap-5.3.8-dist/css/bootstrap.min.css') }}">
     <style>
         :root {
-            --navy: #081222;
-            --gold: #b19139;
-            --gold-light: #f0c96e;
-        }
+    --navy: #001B44;
+    --gold: #C5A059;
+    --gold-light: #d4b578;
+    --gray: #707070;
+}
         body {
             background-color: #f8f9fa;
         }
@@ -57,28 +58,37 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-custom">
         <div class="container">
-            <a href="{{ route('home') }}" class="navbar-brand">Web Profile</a>
+            <a href="{{ route('home') }}" class="navbar-brand">HSRM</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" style="border-color: #b19139;">
                 <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a href="{{ route('home') }}" class="nav-link">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ route('projects') }}" class="nav-link">Projects</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ route('about') }}" class="nav-link">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ route('contact') }}" class="nav-link">Contact</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ route('admin.login') }}" class="nav-link" style="color: #b19139 !important; font-weight: 700;">⚙️ Admin</a>
-                    </li>
-                </ul>
+    <li class="nav-item">
+        <a href="{{ route('home') }}" class="nav-link">Home</a>
+    </li>
+    <li class="nav-item">
+        <a href="{{ route('products') }}" class="nav-link">Products</a>
+    </li>
+    <li class="nav-item">
+        <a href="{{ route('articles') }}" class="nav-link">Articles</a>
+    </li>
+    <li class="nav-item">
+        <a href="{{ route('about') }}" class="nav-link">About</a>
+    </li>
+    <li class="nav-item">
+        <a href="{{ route('contact') }}" class="nav-link">Contact</a>
+    </li>
+    @if (session('admin_id'))
+        <li class="nav-item">
+            <a href="{{ route('admin.dashboard') }}" class="nav-link" style="color: var(--gold) !important;">⚙️ Admin</a>
+        </li>
+    @else
+        <li class="nav-item">
+            <a href="{{ route('admin.login') }}" class="nav-link" style="color: var(--gold) !important;">🔑 Login</a>
+        </li>
+    @endif
+</ul>
             </div>
         </div>
     </nav>
@@ -89,12 +99,12 @@
 
     <footer class="py-4 mt-5">
         <div class="container text-center">
-            <p class="mb-1" style="color: var(--gold); font-weight: 700; font-size: 1.2rem;">Web Profile</p>
-            <p class="mb-1 text-white-50">Saut Josua Romartua</p>
-            <p class="mb-0 text-white-50">&copy; 2026. All rights reserved.</p>
+            <p class="mb-1" style="color: var(--gold); font-weight: 700; font-size: 1.2rem;">HSRM</p>
+            <p class="mb-1 text-white-50">Fashion Brand | Shopee & TikTok Shop</p>
+            <p class="mb-0 text-white-50">&copy; 2026 HSRM. All rights reserved.</p>
         </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js') }}"></script>
 </body>
 </html>

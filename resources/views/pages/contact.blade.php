@@ -1,57 +1,111 @@
 @extends('layouts.app')
-@section('title','Contact')
+@section('title', 'Contact - HSRM')
 @section('content')
 
-<!-- Hero Header -->
-<div class="py-5 text-center" style="background: linear-gradient(135deg, #0a1628, #16235a); border-bottom: 1px solid rgba(255,255,255,0.1);">
-    <h1 class="fw-bold mb-2" style="color: #d4af37; letter-spacing: 1px;">CONTACT</h1>
-    <p class="text-light opacity-75 mb-0">Yuk terhubung, jangan ragu untuk menghubungi saya 😊</p>
-</div>
+<style>
+    .page-header {
+        background: linear-gradient(135deg, #0a1628, #1a2d4a);
+        color: white;
+        padding: 60px 0;
+    }
+    .contact-icon {
+        font-size: 2rem;
+        color: #c9a84c;
+    }
+    .platform-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 20px;
+        border-radius: 10px;
+        font-weight: 700;
+        text-decoration: none;
+        font-size: 0.95rem;
+        transition: transform 0.2s;
+    }
+    .platform-btn:hover {
+        transform: translateY(-3px);
+    }
+    .btn-shopee {
+        background-color: #EE4D2D;
+        color: white;
+    }
+    .btn-tiktok {
+        background-color: #000000;
+        color: white;
+        border: 1px solid #555;
+    }
+    .btn-instagram {
+        background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+        color: white;
+    }
+</style>
 
-<!-- Content -->
-<div class="container py-5" style="background-color: #14161c; min-height: 60vh;">
-    <div class="row justify-content-center">
-        <div class="col-md-9 col-lg-7">
-
-            <h6 class="text-uppercase mb-4" style="color: #d4af37; letter-spacing: 1.5px; font-size: 0.8rem;">
-                Hubungi Saya
-            </h6>
-
-            <div class="d-flex align-items-center mb-4">
-                <i class="bi bi-envelope-fill fs-4 me-3" style="color: #d4af37; width: 28px;"></i>
-                <div>
-                    <small class="text-secondary d-block mb-1">Email</small>
-                    <a href="mailto:questlee@gmail.com" class="text-light fw-semibold fs-5 text-decoration-none">
-                        questlee@gmail.com
-                    </a>
-                </div>
-            </div>
-
-            <div class="d-flex align-items-center mb-4">
-                <i class="bi bi-instagram fs-4 me-3" style="color: #d4af37; width: 28px;"></i>
-                <div>
-                    <small class="text-secondary d-block mb-1">Instagram</small>
-                    <a href="https://instagram.com/questlee_" target="_blank" class="text-light fw-semibold fs-5 text-decoration-none">
-                        @questlee_
-                    </a>
-                </div>
-            </div>
-
-            <div class="d-flex align-items-center mb-5">
-                <i class="bi bi-github fs-4 me-3" style="color: #d4af37; width: 28px;"></i>
-                <div>
-                    <small class="text-secondary d-block mb-1">GitHub</small>
-                    <a href="https://github.com/jojo" target="_blank" class="text-light fw-semibold fs-5 text-decoration-none">
-                        github.com/jojo
-                    </a>
-                </div>
-            </div>
-
-            <p class="text-light opacity-75 lh-lg mb-0">
-                Jangan ragu untuk menghubungi saya kalau ada pertanyaan, kolaborasi, atau sekadar ingin berdiskusi seputar web development! 😊
-            </p>
-
-        </div>
+<div class="page-header">
+    <div class="container text-center">
+        <h1 style="color: #c9a84c; font-weight: 800; letter-spacing: 3px;">CONTACT US</h1>
+        <p class="text-white-50">Hubungi kami untuk informasi lebih lanjut</p>
     </div>
 </div>
+
+<div class="container mt-5">
+    <div class="row g-4 justify-content-center">
+
+        {{-- Platform Cards --}}
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm p-4 text-center h-100">
+                <div class="contact-icon">🛒</div>
+                <h5 class="fw-bold mt-3">Shopee</h5>
+                <p class="text-muted">Temukan produk kami di Shopee dengan penawaran terbaik.</p>
+                <a href="https://id.shp.ee/FDtEduNC" target="_blank" class="platform-btn btn-shopee mx-auto">
+                    🛒 Kunjungi Toko
+                </a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm p-4 text-center h-100">
+                <div class="contact-icon">🎵</div>
+                <h5 class="fw-bold mt-3">TikTok Shop</h5>
+                <p class="text-muted">Follow dan belanja langsung di TikTok Shop HSRM.</p>
+                <a href="https://vt.tiktok.com/ZS9NbhxrayP94-G7yzB/" target="_blank" class="platform-btn btn-tiktok mx-auto">
+                    🎵 Kunjungi Toko
+                </a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm p-4 text-center h-100">
+                <div class="contact-icon">📱</div>
+                <h5 class="fw-bold mt-3">Instagram</h5>
+                <p class="text-muted">Follow Instagram kami untuk update koleksi terbaru.</p>
+                <a href="https://www.instagram.com/hsrm.official?igsh=ODY0M3pvajBiYTll" target="_blank" class="platform-btn btn-instagram mx-auto">
+                    📱 Follow Kami
+                </a>
+            </div>
+        </div>
+
+        {{-- Informasi Kontak --}}
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm p-4 h-100">
+                <h5 class="fw-bold mb-3" style="color: #0a1628;">Informasi Kontak</h5>
+                <p><b style="color: #c9a84c;">📧 Email:</b> hsrm.official@gmail.com</p>
+                <p><b style="color: #c9a84c;">📱 WhatsApp:</b> +62 85763309446</p>
+                <p><b style="color: #c9a84c;">📍 Lokasi:</b> Karawaci, Tangerang</p>
+                <p><b style="color: #c9a84c;">⏰ Jam Operasional:</b> Senin - Sabtu, 09.00 - 21.00 WIB</p>
+            </div>
+        </div>
+
+        {{-- WhatsApp CTA --}}
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm p-4 h-100 text-center" style="background-color: #081222;">
+                <h5 style="color: #c9a84c; font-weight: 800;">💬 Chat Langsung</h5>
+                <p class="text-white-50 mb-4">Ada pertanyaan? Hubungi kami langsung via WhatsApp!</p>
+                <a href="https://wa.me/6285763309446" target="_blank" class="btn btn-gold btn-lg">
+                    💬 Chat WhatsApp
+                </a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
 @endsection

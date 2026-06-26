@@ -1,36 +1,18 @@
 <?php
 
-define('LARAVEL_START', microtime(true));
+ini_set('display_errors', '0');
+error_reporting(E_ALL);
 
-$root = __DIR__ . '/..';
-
-// Create all required writable directories in /tmp
-foreach ([
-    '/tmp/storage/app/public',
-    '/tmp/storage/framework/cache/data',
-    '/tmp/storage/framework/sessions',
-    '/tmp/storage/framework/views',
-    '/tmp/storage/logs',
-    '/tmp/bootstrap/cache',
-] as $dir) {
-    if (!is_dir($dir)) {
-        mkdir($dir, 0775, true);
-    }
-}
-
-require_once $root . '/vendor/autoload.php';
-
-$app = require_once $root . '/bootstrap/app.php';
-
-$app->useStoragePath('/tmp/storage');
-$app->useBootstrapPath('/tmp/bootstrap');
-
-$kernel = $app->make(\Illuminate\Contracts\Http\Kernel::class);
-
-$response = $kernel->handle(
-    $request = \Illuminate\Http\Request::capture()
+$uri = urldecode(
+    parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?? '/'
 );
 
-$response->send();
+if ($uri !== '/' && file_exists(__DIR__ . '/../public' . $uri)) {
+    return false;
+}
 
-$kernel->terminate($request, $response);
+$_SERVER['SCRIPT_FILENAME'] = __DIR__ . '/../public/index.php';
+$_SERVER['SCRIPT_NAME'] = '/index.php';
+$_SERVER['SERVER_NAME'] = $_SERVER['HTTP_HOST'] ?? 'localhost';
+
+require __DIR__ . '/../public/index.php';
