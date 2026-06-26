@@ -1,16 +1,31 @@
 <?php
 
-// Paling awal: test apakah PHP berjalan sama sekali
+// Diagnostic endpoint
 if (isset($_GET['_test'])) {
     header('Content-Type: text/plain');
     echo 'PHP VERSION: ' . PHP_VERSION . "\n";
-    echo 'VERCEL: ' . (getenv('VERCEL') ?: 'not set') . "\n";
-    echo 'APP_KEY set: ' . (getenv('APP_KEY') ? 'YES (' . strlen(getenv('APP_KEY')) . ' chars)' : 'NO') . "\n";
+    echo 'APP_KEY set: ' . (getenv('APP_KEY') ? 'YES' : 'NO') . "\n";
     echo 'DB_HOST: ' . (getenv('DB_HOST') ?: 'not set') . "\n";
+    echo 'DB_PORT: ' . (getenv('DB_PORT') ?: 'not set') . "\n";
+    echo 'DB_DATABASE: ' . (getenv('DB_DATABASE') ?: 'not set') . "\n";
+    echo 'DB_USERNAME: ' . (getenv('DB_USERNAME') ?: 'not set') . "\n";
     echo 'SESSION_DRIVER: ' . (getenv('SESSION_DRIVER') ?: 'not set') . "\n";
-    echo 'CACHE_STORE: ' . (getenv('CACHE_STORE') ?: 'not set') . "\n";
-    echo 'VIEW_COMPILED_PATH: ' . (getenv('VIEW_COMPILED_PATH') ?: 'not set') . "\n";
-    echo '/tmp writable: ' . (is_writable('/tmp') ? 'YES' : 'NO') . "\n";
+    echo 'APP_DEBUG: ' . (getenv('APP_DEBUG') ?: 'not set') . "\n";
+    echo "\n-- DB CONNECTION TEST --\n";
+    echo 'pdo_mysql: ' . (extension_loaded('pdo_mysql') ? 'YES' : 'NO') . "\n";
+    try {
+        $pdo = new PDO(
+            'mysql:host=' . getenv('DB_HOST') . ';port=' . (getenv('DB_PORT') ?: 3306) . ';dbname=' . getenv('DB_DATABASE') . ';charset=utf8mb4',
+            getenv('DB_USERNAME'),
+            getenv('DB_PASSWORD'),
+            [PDO::ATTR_TIMEOUT => 5, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+        );
+        echo "DB: CONNECTED\n";
+        $tables = $pdo->query("SHOW TABLES")->fetchAll(PDO::FETCH_COLUMN);
+        echo "Tables: " . (count($tables) ? implode(', ', $tables) : 'NONE (empty db)') . "\n";
+    } catch (\Exception $e) {
+        echo "DB: FAILED - " . $e->getMessage() . "\n";
+    }
     exit();
 }
 
