@@ -16,7 +16,7 @@
         </div>
         <div class="mb-3">
             <label class="form-label">Gambar</label><br>
-            <img src="{{ asset('bootstrap-5.3.8-dist/images/' . $gallery->image) }}" width="120" class="mb-2 rounded">
+            <img src="@imgurl($gallery->image)" width="120" class="mb-2 rounded">
             <input type="file" name="image" class="form-control" accept="image/*">
             <small class="text-muted">Kosongkan jika tidak ingin mengganti gambar.</small>
         </div>

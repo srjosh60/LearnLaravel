@@ -34,7 +34,7 @@
         @forelse ($products as $product)
         <div class="col-md-4">
             <div class="card shadow-sm h-100 border-0">
-                <img src="{{ $product->image ? asset('bootstrap-5.3.8-dist/images/' . $product->image) : asset('bootstrap-5.3.8-dist/images/logo.png') }}" alt="{{ $product->name }}" class="card-img-top">
+                <img src="{{ $product->image ? (str_starts_with($product->image, 'http') ? $product->image : asset('bootstrap-5.3.8-dist/images/' . $product->image)) : asset('bootstrap-5.3.8-dist/images/logo.png') }}" alt="{{ $product->name }}" class="card-img-top">
                 <div class="card-body">
                     <span class="badge mb-2" style="background-color: #0a1628;">{{ $product->category }}</span>
                     <h5 class="card-title fw-bold">{{ $product->name }}</h5>

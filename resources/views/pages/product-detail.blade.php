@@ -21,7 +21,7 @@
 <div class="container mt-5">
     <div class="row g-5">
         <div class="col-md-6">
-            <img src="{{ $product->image ? asset('bootstrap-5.3.8-dist/images/' . $product->image) : asset('bootstrap-5.3.8-dist/images/logo.png') }}" alt="{{ $product->name }}" class="product-img shadow">
+            <img src="{{ $product->image ? (str_starts_with($product->image, 'http') ? $product->image : asset('bootstrap-5.3.8-dist/images/' . $product->image)) : asset('bootstrap-5.3.8-dist/images/logo.png') }}" alt="{{ $product->name }}" class="product-img shadow">
         </div>
         <div class="col-md-6">
             <span class="badge mb-3" style="background-color: #0a1628; font-size: 0.9rem;">{{ $product->category }}</span>

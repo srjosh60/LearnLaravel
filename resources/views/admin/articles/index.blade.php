@@ -24,7 +24,7 @@
                 <tr>
                     <td>
                         @if ($article->image)
-                            <img src="{{ asset('bootstrap-5.3.8-dist/images/' . $article->image) }}" width="60" height="45" style="object-fit:cover; border-radius:6px;">
+                            <img src="@imgurl($article->image)" width="60" height="45" style="object-fit:cover; border-radius:6px;">
                         @else
                             <span class="text-muted small">-</span>
                         @endif

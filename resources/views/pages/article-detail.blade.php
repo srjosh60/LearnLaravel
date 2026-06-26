@@ -49,7 +49,7 @@
             <span class="badge mb-3" style="background-color: #081222; font-size: 0.9rem;">{{ $article->category }}</span>
             <h2 class="fw-bold mb-3">{{ $article->title }}</h2>
             <p class="text-muted">✍ {{ $article->author }} · {{ $article->created_at ? $article->created_at->format('d M Y') : '-' }}</p>
-            <img src="{{ asset('bootstrap-5.3.8-dist/images/' . $article->image) }}" alt="{{ $article->title }}" class="article-img shadow mb-4">
+            <img src="@imgurl($article->image)" alt="{{ $article->title }}" class="article-img shadow mb-4">
             <div class="card border-0 shadow-sm p-4 mb-4">
                 <p class="lead">{{ $article->content }}</p>
             </div>

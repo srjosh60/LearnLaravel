@@ -12,7 +12,7 @@
         @forelse ($galleries as $gallery)
         <div class="col-md-3 col-6">
             <div class="card h-100">
-                <img src="{{ asset('bootstrap-5.3.8-dist/images/' . $gallery->image) }}" style="width:100%; height:350px; object-fit:cover; object-position:top;">
+                <img src="@imgurl($gallery->image)" style="width:100%; height:350px; object-fit:cover; object-position:top;">
                 <div class="card-body p-2">
                     <p class="small fw-bold mb-1">{{ $gallery->title ?? '-' }}</p>
                     <p class="small text-muted mb-2">{{ $gallery->caption ?? '' }}</p>

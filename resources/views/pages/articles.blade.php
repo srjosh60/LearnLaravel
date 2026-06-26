@@ -28,7 +28,7 @@
         @forelse ($articles as $article)
         <div class="col-md-6">
             <div class="card shadow-sm h-100 border-0">
-                <img src="{{ asset('bootstrap-5.3.8-dist/images/' . $article->image) }}" alt="{{ $article->title }}" class="card-img-top">
+                <img src="@imgurl($article->image)" alt="{{ $article->title }}" class="card-img-top">
                 <div class="card-body">
                     <span class="badge mb-2" style="background-color: #0a1628;">{{ $article->category }}</span>
                     <h5 class="card-title fw-bold">{{ $article->title }}</h5>

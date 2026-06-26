@@ -35,7 +35,7 @@
         <div class="mb-3">
             <label class="form-label">Gambar</label><br>
             @if ($product->image)
-                <img src="{{ asset('bootstrap-5.3.8-dist/images/' . $product->image) }}" width="100" class="mb-2 rounded">
+                <img src="@imgurl($product->image)" width="100" class="mb-2 rounded">
             @endif
             <input type="file" name="image" class="form-control" accept="image/*">
             <small class="text-muted">Kosongkan jika tidak ingin mengganti gambar.</small>
