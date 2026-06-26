@@ -218,7 +218,7 @@
                     </div>
                     @endif
                     <div class="card-body">
-                        <small class="text-muted">{{ $article->created_at->format('d M Y') }}</small>
+                        <small class="text-muted">{{ $article->created_at?->format('d M Y') }}</small>
                         <h6 class="fw-bold mt-1">{{ $article->title }}</h6>
                         <p class="text-muted small">{{ Str::limit($article->content, 80) }}</p>
                         <a href="{{ route('articles.show', $article->id) }}" class="btn btn-gold btn-sm">Baca Selengkapnya</a>
