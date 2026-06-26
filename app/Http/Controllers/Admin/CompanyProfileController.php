@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Admin\Traits\CloudinaryUpload;
 use App\Models\CompanyProfile;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
 
 class CompanyProfileController extends Controller
 {
+    use CloudinaryUpload;
     public function index()
     {
         $profiles = CompanyProfile::latest()->get();
@@ -90,47 +91,4 @@ class CompanyProfileController extends Controller
         return redirect()->route('admin.profile.index')->with('success', 'Profil perusahaan berhasil dihapus.');
     }
 
-    private function uploadToCloudinary($file): string
-    {
-        $cloudName = config('services.cloudinary.cloud_name');
-        $apiKey    = config('services.cloudinary.api_key');
-        $apiSecret = config('services.cloudinary.api_secret');
-
-        $timestamp = time();
-        $signature = sha1("timestamp={$timestamp}{$apiSecret}");
-
-        $response = Http::attach(
-            'file',
-            file_get_contents($file->getRealPath()),
-            $file->getClientOriginalName()
-        )->post("https://api.cloudinary.com/v1_1/{$cloudName}/image/upload", [
-            'api_key'   => $apiKey,
-            'timestamp' => $timestamp,
-            'signature' => $signature,
-        ]);
-
-        return $response->json('secure_url');
-    }
-
-    private function deleteFromCloudinary(string $url): void
-    {
-        $cloudName = config('services.cloudinary.cloud_name');
-        $apiKey    = config('services.cloudinary.api_key');
-        $apiSecret = config('services.cloudinary.api_secret');
-
-        // Extract public_id from URL: .../upload/v123456/{public_id}.ext
-        if (!preg_match('/\/upload\/(?:v\d+\/)?(.+)\.\w+$/', $url, $matches)) {
-            return;
-        }
-        $publicId  = $matches[1];
-        $timestamp = time();
-        $signature = sha1("public_id={$publicId}&timestamp={$timestamp}{$apiSecret}");
-
-        Http::post("https://api.cloudinary.com/v1_1/{$cloudName}/image/destroy", [
-            'public_id' => $publicId,
-            'api_key'   => $apiKey,
-            'timestamp' => $timestamp,
-            'signature' => $signature,
-        ]);
-    }
 }

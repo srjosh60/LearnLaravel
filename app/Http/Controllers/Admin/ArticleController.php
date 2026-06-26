@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Admin\Traits\CloudinaryUpload;
 use App\Models\Article;
 use Illuminate\Http\Request;
 
 class ArticleController extends Controller
 {
+    use CloudinaryUpload;
     public function index()
     {
         $articles = Article::latest()->paginate(10);
@@ -81,18 +83,11 @@ class ArticleController extends Controller
 
     private function uploadImage($file): string
     {
-        $filename = time() . '_' . preg_replace('/\s+/', '-', $file->getClientOriginalName());
-        $file->move(public_path('bootstrap-5.3.8-dist/images'), $filename);
-        return $filename;
+        return $this->uploadToCloudinary($file);
     }
 
-    private function deleteImage(?string $filename): void
+    private function deleteImage(?string $url): void
     {
-        if ($filename) {
-            $path = public_path('bootstrap-5.3.8-dist/images/' . $filename);
-            if (file_exists($path)) {
-                @unlink($path);
-            }
-        }
+        $this->deleteFromCloudinary($url);
     }
 }

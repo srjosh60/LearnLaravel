@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Admin\Traits\CloudinaryUpload;
 use App\Models\Gallery;
 use Illuminate\Http\Request;
 
 class GalleryController extends Controller
 {
+    use CloudinaryUpload;
     public function index()
     {
         $galleries = Gallery::latest()->paginate(12);
@@ -32,10 +34,7 @@ class GalleryController extends Controller
             'image.max' => 'Ukuran gambar maksimal 2MB.',
         ]);
 
-        $file = $request->file('image');
-        $filename = time() . '_' . preg_replace('/\s+/', '-', $file->getClientOriginalName());
-        $file->move(public_path('bootstrap-5.3.8-dist/images'), $filename);
-        $validated['image'] = $filename;
+        $validated['image'] = $this->uploadToCloudinary($request->file('image'));
 
         Gallery::create($validated);
 
@@ -60,14 +59,8 @@ class GalleryController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            if ($gallery->image) {
-                $path = public_path('bootstrap-5.3.8-dist/images/' . $gallery->image);
-                if (file_exists($path)) @unlink($path);
-            }
-            $file = $request->file('image');
-            $filename = time() . '_' . preg_replace('/\s+/', '-', $file->getClientOriginalName());
-            $file->move(public_path('bootstrap-5.3.8-dist/images'), $filename);
-            $validated['image'] = $filename;
+            $this->deleteFromCloudinary($gallery->image);
+            $validated['image'] = $this->uploadToCloudinary($request->file('image'));
         }
 
         $gallery->update($validated);
@@ -77,10 +70,7 @@ class GalleryController extends Controller
 
     public function destroy(Gallery $gallery)
     {
-        if ($gallery->image) {
-            $path = public_path('bootstrap-5.3.8-dist/images/' . $gallery->image);
-            if (file_exists($path)) @unlink($path);
-        }
+        $this->deleteFromCloudinary($gallery->image);
         $gallery->delete();
 
         return redirect()->route('admin.gallery.index')->with('success', 'Foto berhasil dihapus.');
